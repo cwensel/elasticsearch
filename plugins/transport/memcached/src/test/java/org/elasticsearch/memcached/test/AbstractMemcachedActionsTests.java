@@ -60,7 +60,12 @@ public abstract class AbstractMemcachedActionsTests {
     }
 
     @Test public void testSimpleOperations() throws Exception {
-        Future<Boolean> setResult = memcachedClient.set("/test/person/1", 0, jsonBuilder().startObject().field("test", "value").endObject().copiedBytes());
+        Future<Boolean> setResult = null;
+
+        for (int i = 1; i < 5; i++) {
+            setResult = memcachedClient.set("/test/person/" + i, 0, jsonBuilder().startObject().field("test", "value" + i).endObject().copiedBytes());
+        }
+
         assertThat(setResult.get(10, TimeUnit.SECONDS), equalTo(true));
 
         ClusterHealthResponse health = node.client().admin().cluster().prepareHealth().setWaitForYellowStatus().execute().actionGet();
