@@ -363,6 +363,8 @@ public class XContentObjectMapper implements XContentMapper, XContentIncludeInAl
                     objectMapper = mappers.get(currentFieldName);
                     if (objectMapper != null) {
                         objectMapper.parse(context);
+                        context.path().remove();
+                        return;
                     }
 
                     BuilderContext builderContext = new BuilderContext(context.path());
